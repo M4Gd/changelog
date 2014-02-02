@@ -60,11 +60,8 @@ class Changelog {
 		// Load public-facing style sheet and JavaScript.
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
 
-		/* Define custom functionality.
-		 * Refer To http://codex.wordpress.org/Plugin_API#Hooks.2C_Actions_and_Filters
-		 */
-		add_action( '@TODO', array( $this, 'action_method_name' ) );
-		add_filter( '@TODO', array( $this, 'filter_method_name' ) );
+		// Add new post type for changelog
+		add_action( 'init', array( $this, 'changelog_post_type_init' ) );
 
 	}
 
@@ -144,6 +141,46 @@ class Changelog {
 	 */
 	public function filter_method_name() {
 		// @TODO: Define your filter hook callback here
+	}
+
+	/**
+	 * Adds new post type for Changelog
+	 * @since 	 1.0.0 
+	 */
+	function changelog_post_type_init() 
+	{
+	    
+	    $labels = array(
+	        'name'              => __('ChangeLog'     		, $this->plugin_slug),
+	        'singular_name'     => __('changelog'     		, $this->plugin_slug),
+	        'add_new'           => __('Add Log'	  	  		, $this->plugin_slug),
+	        'all_items'         => __('All Logs'	  		, $this->plugin_slug),
+	        'add_new_item'      => __('Add New Log'   		, $this->plugin_slug),
+	        'edit_item'         => __('Edit Log'      		, $this->plugin_slug),
+	        'new_item'          => __('New Log'       		, $this->plugin_slug),
+	        'view_item'         => __('View ChangeLogs'     , $this->plugin_slug),
+	        'search_items'      => __('Search ChangeLogs'   , $this->plugin_slug),
+	        'not_found'         => __('No Log found' 		, $this->plugin_slug),
+	        'not_found_in_trash'=> __('No Log found in Trash', $this->plugin_slug), 
+	        'parent_item_colon' => ''
+	    );
+	      
+	    $args = array(
+	        'labels'            => $labels,
+	        'public'            => true,
+	        'publicly_queryable'=> true,
+	        'show_ui'           => true, 
+	        'query_var'         => true,
+	        'rewrite'           => array('slug' => "log",
+	                                     'with_front' => true),
+	        'capability_type'   => 'changelog',
+	        'map_meta_cap' 		=> true,
+	        'hierarchical'      => false,
+	        'menu_position'     => 34,
+	        'supports'          => array('title','editor','excerpt','thumbnail', 'page-attributes'),
+	        'has_archive'       => apply_filters("axiom_plugin_changelog_archive_structure" , "log/all")
+	    );
+	    register_post_type( "changelog", $args);
 	}
 
 }

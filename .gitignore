@@ -1,0 +1,16 @@
+# Sass Ignores
+*.sass-cache
+
+# sublimetest
+# workspace files are user-specific
+*.sublime-workspace
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# OS X
+.DS_Store

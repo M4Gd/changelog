@@ -58,11 +58,10 @@ class Changelog {
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
 		// Load public-facing style sheet and JavaScript.
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
+		//add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
 
 		// Add new post type for changelog
 		add_action( 'init', array( $this, 'changelog_post_type_init' ) );
-
 	}
 
 	/**
@@ -114,56 +113,33 @@ class Changelog {
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles() {
-		wp_enqueue_style( $this->plugin_slug . '-plugin-styles', plugins_url( 'assets/css/public.css', __FILE__ ), array(), self::VERSION );
+		wp_enqueue_style( 'changelog-public-styles', plugins_url( 'assets/css/public.css', __FILE__ ), array(), self::VERSION );
 	}
 
-	/**
-	 * NOTE:  Actions are points in the execution of a page or process
-	 *        lifecycle that WordPress fires.
-	 *
-	 *        Actions:    http://codex.wordpress.org/Plugin_API#Actions
-	 *        Reference:  http://codex.wordpress.org/Plugin_API/Action_Reference
-	 *
-	 * @since    1.0.0
-	 */
-	public function action_method_name() {
-		// @TODO: Define your action hook callback here
-	}
-
-	/**
-	 * NOTE:  Filters are points of execution in which WordPress modifies data
-	 *        before saving it or sending it to the browser.
-	 *
-	 *        Filters: http://codex.wordpress.org/Plugin_API#Filters
-	 *        Reference:  http://codex.wordpress.org/Plugin_API/Filter_Reference
-	 *
-	 * @since    1.0.0
-	 */
-	public function filter_method_name() {
-		// @TODO: Define your filter hook callback here
-	}
 
 	/**
 	 * Adds new post type for Changelog
 	 * @since 	 1.0.0 
 	 */
-	function changelog_post_type_init() 
-	{
-	    
+	public function changelog_post_type_init() {
+
 	    $labels = array(
-	        'name'              => __('ChangeLog'     		, $this->plugin_slug),
-	        'singular_name'     => __('changelog'     		, $this->plugin_slug),
-	        'add_new'           => __('Add Log'	  	  		, $this->plugin_slug),
-	        'all_items'         => __('All Logs'	  		, $this->plugin_slug),
-	        'add_new_item'      => __('Add New Log'   		, $this->plugin_slug),
-	        'edit_item'         => __('Edit Log'      		, $this->plugin_slug),
-	        'new_item'          => __('New Log'       		, $this->plugin_slug),
-	        'view_item'         => __('View ChangeLogs'     , $this->plugin_slug),
-	        'search_items'      => __('Search ChangeLogs'   , $this->plugin_slug),
-	        'not_found'         => __('No Log found' 		, $this->plugin_slug),
-	        'not_found_in_trash'=> __('No Log found in Trash', $this->plugin_slug), 
+	        'name'              => __('Changelogs'			, 'changelog'),
+	        'singular_name'     => __('changelog'			, 'changelog'),
+	        'add_new'           => __('Add Log'				, 'changelog'),
+	        'all_items'         => __('All Logs'			, 'changelog'),
+	        'add_new_item'      => __('Add New Log'			, 'changelog'),
+	        'edit_item'         => __('Edit Log'			, 'changelog'),
+	        'new_item'          => __('New Log'				, 'changelog'),
+	        'view_item'         => __('View ChangeLogs'		, 'changelog'),
+	        'search_items'      => __('Search ChangeLogs'	, 'changelog'),
+	        'not_found'         => __('No Log found'		, 'changelog'),
+	        'not_found_in_trash'=> __('No Log found in Trash', 'changelog'), 
 	        'parent_item_colon' => ''
 	    );
+
+	    $rewrite = array(	'slug' 		=> apply_filters('axiom_plugin_changelog_structure', 'log'),
+	    					'with_front'=> true);
 	      
 	    $args = array(
 	        'labels'            => $labels,
@@ -171,16 +147,60 @@ class Changelog {
 	        'publicly_queryable'=> true,
 	        'show_ui'           => true, 
 	        'query_var'         => true,
-	        'rewrite'           => array('slug' => "log",
-	                                     'with_front' => true),
-	        'capability_type'   => 'changelog',
-	        'map_meta_cap' 		=> true,
+	        'rewrite'           => $rewrite,
+	        'capability_type'   => 'post',
 	        'hierarchical'      => false,
 	        'menu_position'     => 34,
 	        'supports'          => array('title','editor','excerpt','thumbnail', 'page-attributes'),
-	        'has_archive'       => apply_filters("axiom_plugin_changelog_archive_structure" , "log/all")
-	    );
+	        'has_archive'       => apply_filters('axiom_plugin_changelog_archive_structure', 'log/all')
+	    ); 
+
 	    register_post_type( "changelog", $args);
+
+		 
+	    // labels for changelog Category
+	    $log_category_labels = array(
+	        'name'              => __( 'ChangeLog Categories' , 'changelog' ),
+	        'singular_name'     => __( 'ChangeLog Category'   , 'changelog' ),
+	        'search_items'      => __( 'Search in ChangeLog Categories'   , 'changelog'),
+	        'all_items'         => __( 'All ChangeLog Categories'         , 'changelog'),
+	        'most_used_items'   => null,
+	        'parent_item'       => null,
+	        'parent_item_colon' => null,
+	        'edit_item'         => __( 'Edit ChangeLog Category'          , 'changelog'), 
+	        'update_item'       => __( 'Update ChangeLog Category'        , 'changelog'),
+	        'add_new_item'      => __( 'Add new ChangeLog Category'       , 'changelog'),
+	        'new_item_name'     => __( 'New ChangeLog Category'           , 'changelog'),
+	        'menu_name'         => __( 'Categories'             	      , 'changelog'),
+	    );
+	    
+	    register_taxonomy('changelog-cat', array('changelog'), array(
+	        'hierarchical'      => true,
+	        'labels'            => $log_category_labels,
+	        'singular_name'     => 'ChangeLog Category',
+	        'show_ui'           => true,
+	        'query_var'         => true,
+	        'rewrite'           => array('slug' => 'changelog' )
+	    ));
+	}
+
+
+	/**
+	 * On plugin activation.
+	 *
+	 * @since    1.0.0
+	 */
+	public function activate() {
+		flush_rewrite_rules();
+	}
+
+	/**
+	 * On plugin deactivation.
+	 *
+	 * @since    1.0.0
+	 */
+	public function deactivate() {
+		flush_rewrite_rules();
 	}
 
 }

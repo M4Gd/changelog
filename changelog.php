@@ -2,7 +2,7 @@
 /**
  * A WordPress plugin that allows you to add, archive and display your product's changelog in your WordPress website.
  *
- * @package   Changelog
+ * @package   axiom
  * @author    averta
  * @license   GPL-2.0+
  * @copyright 2014 

@@ -11,7 +11,7 @@
  * Plugin Name:       Changelog
  * Plugin URI:        https://github.com/M4Gd/changelog
  * Description:       A plugin to add and display theme and plugins changelogs
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            averta
  * Author URI:        https://github.com/M4Gd/
  * Text Domain:       changelog

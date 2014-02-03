@@ -1,6 +1,6 @@
 <?php
 /**
- * The Changelog Plugin.
+ * A WordPress plugin that allows you to add, archive and display your product's changelog in your WordPress website.
  *
  * @package   Changelog
  * @author    averta
@@ -9,11 +9,11 @@
  *
  * @wordpress-plugin
  * Plugin Name:       Changelog
- * Plugin URI:        @TODO
+ * Plugin URI:        https://github.com/M4Gd/changelog
  * Description:       A plugin to add and display theme and plugins changelogs
  * Version:           1.0.0
  * Author:            averta
- * Author URI:        https://github.com/M4Gd/changelog
+ * Author URI:        https://github.com/M4Gd/
  * Text Domain:       changelog
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt

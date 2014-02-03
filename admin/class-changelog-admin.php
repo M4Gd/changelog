@@ -50,7 +50,7 @@ class ChangelogAdmin {
 		// 
 		add_action( 'add_meta_boxes', array( $this, 'add_changelog_custom_meta_box'  ) );
 		add_action( 'save_post'		, array( $this, 'save_changelog_custom_meta_box' ) );
-
+		add_action( 'admin_footer'	, array( $this, 'flush_plugin_rewrite_rules' 	 ) );
 	}
 
 	/**
@@ -171,6 +171,18 @@ class ChangelogAdmin {
         }
 	}
 
+	/**
+	 * Flush rewrite rules on first run
+	 */
+	public function flush_plugin_rewrite_rules() {
+
+		$is_flushed = get_option( 'axiom_plugin_changelog_flushed');
+		if( $is_flushed  != "1" ) {
+			update_option( 'axiom_plugin_changelog_flushed', 1 );
+			flush_rewrite_rules();
+		}
+
+	}
 
 	/**
 	 * Render the settings page for this plugin.

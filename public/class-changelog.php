@@ -182,6 +182,7 @@ class Changelog {
 	        'query_var'         => true,
 	        'rewrite'           => array('slug' => 'changelog' )
 	    ));
+
 	}
 
 
@@ -191,7 +192,7 @@ class Changelog {
 	 * @since    1.0.0
 	 */
 	public function activate() {
-		flush_rewrite_rules();
+		update_option( 'axiom_plugin_changelog_flushed', 0 );
 	}
 
 	/**

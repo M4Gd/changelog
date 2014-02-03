@@ -31,6 +31,10 @@ if ( ! defined( 'WPINC' ) ) {
  *----------------------------------------------------------------------------*/
 
 require_once( plugin_dir_path( __FILE__ ) . 'public/class-changelog.php' );
+
+register_activation_hook  ( __FILE__, array( 'Changelog', 'activate'   ) );
+register_deactivation_hook( __FILE__, array( 'Changelog', 'deactivate' ) );
+
 add_action( 'plugins_loaded', array( 'Changelog', 'get_instance' ) );
 
 /*----------------------------------------------------------------------------*

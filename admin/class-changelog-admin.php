@@ -40,15 +40,6 @@ class ChangelogAdmin {
 	 */
 	private function __construct() {
 
-		/*
-		 * @TODO :
-		 *
-		 * - Uncomment following lines if the admin class should only be available for super admins
-		 */
-		/* if( ! is_super_admin() ) {
-			return;
-		} */
-
 		$plugin = Changelog::get_instance();
 		$this->plugin_slug = $plugin->get_plugin_slug();
 
@@ -56,18 +47,9 @@ class ChangelogAdmin {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
 
-		// Add the options page and menu item.
-		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
-
-
-		/*
-		 * Define custom functionality.
-		 *
-		 * Read more about actions and filters:
-		 * http://codex.wordpress.org/Plugin_API#Hooks.2C_Actions_and_Filters
-		 */
-		add_action( '@TODO', array( $this, 'action_method_name' ) );
-		add_filter( '@TODO', array( $this, 'filter_method_name' ) );
+		// 
+		add_action( 'add_meta_boxes', array( $this, 'add_changelog_custom_meta_box'  ) );
+		add_action( 'save_post'		, array( $this, 'save_changelog_custom_meta_box' ) );
 
 	}
 
@@ -97,13 +79,11 @@ class ChangelogAdmin {
 	 */
 	public function enqueue_admin_styles() {
 
-		if ( ! isset( $this->plugin_screen_hook_suffix ) ) {
-			return;
-		}
-
+		// just load on changelog screen
 		$screen = get_current_screen();
-		if ( $this->plugin_screen_hook_suffix == $screen->id ) {
-			wp_enqueue_style( $this->plugin_slug .'-admin-styles', plugins_url( 'assets/css/admin.css', __FILE__ ), array(), Changelog::VERSION );
+	 	if( isset($screen) && $screen->post_type == 'changelog' ) {
+	 		wp_enqueue_style( 'jquery-cu-ui', plugins_url( 'assets/css/jquery-ui.css', __FILE__ ), array(), Changelog::VERSION );
+	 		wp_enqueue_style( 'changelog-admin-style', plugins_url( 'assets/css/admin.css', __FILE__ ), array(), Changelog::VERSION );
 		}
 
 	}
@@ -117,47 +97,80 @@ class ChangelogAdmin {
 	 */
 	public function enqueue_admin_scripts() {
 
-		if ( ! isset( $this->plugin_screen_hook_suffix ) ) {
-			return;
-		}
-
+		// just load on changelog screen
 		$screen = get_current_screen();
-		if ( $this->plugin_screen_hook_suffix == $screen->id ) {
-			wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array( 'jquery' ), Changelog::VERSION );
+		if( isset($screen) && $screen->post_type == 'changelog' ) { echo "BBB";
+	 		wp_enqueue_script( 'jquery-ui-datepicker' );
+	 		wp_enqueue_script( 'maskedinput', 
+	 		                  	plugins_url( 'assets/js/jquery.maskedinput.min.js', __FILE__ ), 
+	 		                  	array( 'jquery' ), 
+	 		                  	Changelog::VERSION, true );
+
+	 		wp_enqueue_script( 'changelog_admin_script', 
+	 		                  	plugins_url( 'assets/js/admin.js', __FILE__ ), 
+	 		                  	array( 'jquery', 'maskedinput', 'jquery-ui-datepicker' ), 
+	 		                  	Changelog::VERSION, true );
 		}
 
+	}
+
+	// Add the Meta Box  
+	public function add_changelog_custom_meta_box () {  
+	    add_meta_box(  
+	        'log_options', // $id  
+	        'Changelog Options', // $title   
+	        array( $this, 'show_changelog_meta_box' ), // $callback  
+	        'changelog', // $page  
+	        'normal', // $context  
+	        'high'); // $priority  
+	}
+
+
+	public function show_changelog_meta_box(){
+		global $post;
+		
+		wp_nonce_field( 'log_options' , 'log_options_nonce' );
+		
+		$date    = get_post_meta($post->ID, "release_date"		, true);
+		$version = get_post_meta($post->ID, "release_version"	, true);
+		
+		echo '<label>'.__('Version Release Date', 'changelog').' : <input type="text" class="datepickerField" name="release_date" id="release_date" value="'.$date.'" /></label><br ><br />';
+		echo '<label>'.__('Version Number', 'changelog').' : <input type="text" class="" name="release_version" id="release_version" value="'.$version.'" /></label>';
 	}
 
 	/**
-	 * Register the administration menu for this plugin into the WordPress Dashboard menu.
+	 * Save custom metabox values
 	 *
 	 * @since    1.0.0
 	 */
-	public function add_plugin_admin_menu() {
-
-		/*
-		 * Add a settings page for this plugin to the Settings menu.
-		 *
-		 * NOTE:  Alternative menu locations are available via WordPress administration menu functions.
-		 *
-		 *        Administration Menus: http://codex.wordpress.org/Administration_Menus
-		 *
-		 * @TODO:
-		 *
-		 * - Change 'Page Title' to the title of your plugin admin page
-		 * - Change 'Menu Text' to the text for menu item for the plugin settings page
-		 * - Change 'manage_options' to the capability you see fit
-		 *   For reference: http://codex.wordpress.org/Roles_and_Capabilities
-		 */
-		$this->plugin_screen_hook_suffix = add_options_page(
-			__( 'Page Title', $this->plugin_slug ),
-			__( 'Menu Text', $this->plugin_slug ),
-			'manage_options',
-			$this->plugin_slug,
-			array( $this, 'display_plugin_admin_page' )
-		);
-
+	public function save_changelog_custom_meta_box($post_id){
+		global $post;
+	        
+        // Verify the nonce before proceeding. 
+        if ( !isset( $_POST['log_options_nonce'] ) || !wp_verify_nonce( $_POST['log_options_nonce'], 'log_options' ) )
+        return $post->ID;
+        
+        // check autosave
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+            return $post->ID;
+        }
+        
+        $old_date = get_post_meta($post->ID, "release_date", true);
+        $new_date = $_POST['release_date'];
+        
+        if($old_date !== $new_date){
+        	update_post_meta($post->ID, "release_date", $new_date);
+        }
+        
+        
+        $old_ver = get_post_meta($post->ID, "release_version", true);
+        $new_ver = $_POST['release_version'];
+        
+        if($old_ver !== $new_ver){
+        	update_post_meta($post->ID, "release_version", $new_ver);
+        }
 	}
+
 
 	/**
 	 * Render the settings page for this plugin.
@@ -166,33 +179,6 @@ class ChangelogAdmin {
 	 */
 	public function display_plugin_admin_page() {
 		include_once( 'views/admin.php' );
-	}
-	
-
-	/**
-	 * NOTE:     Actions are points in the execution of a page or process
-	 *           lifecycle that WordPress fires.
-	 *
-	 *           Actions:    http://codex.wordpress.org/Plugin_API#Actions
-	 *           Reference:  http://codex.wordpress.org/Plugin_API/Action_Reference
-	 *
-	 * @since    1.0.0
-	 */
-	public function action_method_name() {
-		// @TODO: Define your action hook callback here
-	}
-
-	/**
-	 * NOTE:     Filters are points of execution in which WordPress modifies data
-	 *           before saving it or sending it to the browser.
-	 *
-	 *           Filters: http://codex.wordpress.org/Plugin_API#Filters
-	 *           Reference:  http://codex.wordpress.org/Plugin_API/Filter_Reference
-	 *
-	 * @since    1.0.0
-	 */
-	public function filter_method_name() {
-		// @TODO: Define your filter hook callback here
 	}
 
 }

@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TODO 1.0.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/plugin-name\n"
-"POT-Creation-Date: 2013-05-10 11:23:19+00:00\n"
-"PO-Revision-Date: 2013-05-10 10:37-0500\n"
+"POT-Creation-Date: 2014-02-03 13:30+0330\n"
+"PO-Revision-Date: 2014-02-03 13:30+0330\n"
 "Last-Translator: FULL NAME <email@example.com>\n"
 "Language-Team: LANGUAGE <translations@example.com >\n"
 "MIME-Version: 1.0\n"
@@ -18,14 +18,90 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: class-plugin-name-admin.php:170
-msgid "Page Title"
+#: admin/class-changelog-admin.php:137
+msgid "Version Release Date"
 msgstr ""
 
-#: class-plugin-name-admin.php:171
-msgid "Menu Text"
+#: admin/class-changelog-admin.php:138
+msgid "Version Number"
 msgstr ""
 
-#: class-plugin-name-admin.php:197
-msgid "Settings"
+#: public/class-changelog.php:127
+msgid "Changelogs"
+msgstr ""
+
+#: public/class-changelog.php:128
+msgid "changelog"
+msgstr ""
+
+#: public/class-changelog.php:129
+msgid "Add Log"
+msgstr ""
+
+#: public/class-changelog.php:130
+msgid "All Logs"
+msgstr ""
+
+#: public/class-changelog.php:131
+msgid "Add New Log"
+msgstr ""
+
+#: public/class-changelog.php:132
+msgid "Edit Log"
+msgstr ""
+
+#: public/class-changelog.php:133
+msgid "New Log"
+msgstr ""
+
+#: public/class-changelog.php:134
+msgid "View ChangeLogs"
+msgstr ""
+
+#: public/class-changelog.php:135
+msgid "Search ChangeLogs"
+msgstr ""
+
+#: public/class-changelog.php:136
+msgid "No Log found"
+msgstr ""
+
+#: public/class-changelog.php:137
+msgid "No Log found in Trash"
+msgstr ""
+
+#: public/class-changelog.php:163
+msgid "ChangeLog Categories"
+msgstr ""
+
+#: public/class-changelog.php:164
+msgid "ChangeLog Category"
+msgstr ""
+
+#: public/class-changelog.php:165
+msgid "Search in ChangeLog Categories"
+msgstr ""
+
+#: public/class-changelog.php:166
+msgid "All ChangeLog Categories"
+msgstr ""
+
+#: public/class-changelog.php:170
+msgid "Edit ChangeLog Category"
+msgstr ""
+
+#: public/class-changelog.php:171
+msgid "Update ChangeLog Category"
+msgstr ""
+
+#: public/class-changelog.php:172
+msgid "Add new ChangeLog Category"
+msgstr ""
+
+#: public/class-changelog.php:173
+msgid "New ChangeLog Category"
+msgstr ""
+
+#: public/class-changelog.php:174
+msgid "Categories"
 msgstr ""

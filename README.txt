@@ -1,5 +1,9 @@
 === Changelog ===
 
+ Version 1.0.0 (03.02.2014)
+- Initial release
+
+
 
 == Installation ==
 
@@ -32,4 +36,4 @@ e.g.
 
 == Updates ==
 
-This plugin supports the [GitHub Updater](https://github.com/afragen/github-updater) plugin, so if you install that, this plugin becomes automatically updateable direct from GitHub. Any submission to WP.org repo will make this redundant.
+This plugin supports the [GitHub Updater](https://github.com/afragen/github-updater) plugin, so if you install that, this plugin becomes automatically updateable direct from GitHub.

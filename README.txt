@@ -1,5 +1,8 @@
 === Changelog ===
 
+ Version 1.0.0 (04.02.2014)
+- rewrite rules flush on plugin activation & deactivation
+
  Version 1.0.0 (03.02.2014)
 - Initial release
 

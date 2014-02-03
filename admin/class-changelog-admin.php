@@ -99,7 +99,7 @@ class ChangelogAdmin {
 
 		// just load on changelog screen
 		$screen = get_current_screen();
-		if( isset($screen) && $screen->post_type == 'changelog' ) { echo "BBB";
+		if( isset($screen) && $screen->post_type == 'changelog' ) {
 	 		wp_enqueue_script( 'jquery-ui-datepicker' );
 	 		wp_enqueue_script( 'maskedinput', 
 	 		                  	plugins_url( 'assets/js/jquery.maskedinput.min.js', __FILE__ ), 

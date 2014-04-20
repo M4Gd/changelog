@@ -9,7 +9,7 @@
             showButtonPanel: true
         });
 
-		$('#release_version').mask("9.9.9");
+		$('.cl_there_dig_version').mask("9.9.9");
 	});
 
 }(jQuery));

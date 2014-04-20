@@ -135,9 +135,9 @@ class ChangelogAdmin {
 		$version = get_post_meta($post->ID, "release_version"	, true);
 		$tested  = get_post_meta($post->ID, "compatibility_version"	, true);
 		
-		echo '<label>'.__('Version Release Date', 'changelog').' : <input type="text" class="datepickerField" name="release_date" id="release_date" value="'.$date.'" /></label><br ><br />';
-		echo '<label>'.__('Version Number', 'changelog').' : <input type="text" class="" name="release_version" id="release_version" value="'.$version.'" /></label>';
-		echo '<label>'.__('Compatibility with WordPress version', 'changelog').' : <input type="text" class="" name="compatibility_version" id="compatibility_version" value="'.$tested.'" /></label>';
+		echo '<label>'.__('Version Release Date', 'changelog').' : <input type="text" class="datepickerField" name="release_date" id="release_date" value="'.$date.'" /></label><br /><br />';
+		echo '<label>'.__('Version Number', 'changelog').' : <input type="text" class="cl_there_dig_version" name="release_version" id="release_version" value="'.$version.'" /></label><br /><br />';
+		echo '<label>'.__('Compatibility with WordPress version', 'changelog').' : <input type="text" class="cl_there_dig_version" name="compatibility_version" id="compatibility_version" value="'.$tested.'" /></label>';
 
 	}
 

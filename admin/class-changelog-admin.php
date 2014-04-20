@@ -133,9 +133,12 @@ class ChangelogAdmin {
 		
 		$date    = get_post_meta($post->ID, "release_date"		, true);
 		$version = get_post_meta($post->ID, "release_version"	, true);
+		$tested  = get_post_meta($post->ID, "compatibility_version"	, true);
 		
 		echo '<label>'.__('Version Release Date', 'changelog').' : <input type="text" class="datepickerField" name="release_date" id="release_date" value="'.$date.'" /></label><br ><br />';
 		echo '<label>'.__('Version Number', 'changelog').' : <input type="text" class="" name="release_version" id="release_version" value="'.$version.'" /></label>';
+		echo '<label>'.__('Compatibility with WordPress version', 'changelog').' : <input type="text" class="" name="compatibility_version" id="compatibility_version" value="'.$tested.'" /></label>';
+
 	}
 
 	/**
@@ -155,19 +158,26 @@ class ChangelogAdmin {
             return $post->ID;
         }
         
-        $old_date = get_post_meta($post->ID, "release_date", true);
+        $old_date = get_post_meta( $post->ID, "release_date", true );
         $new_date = $_POST['release_date'];
         
         if($old_date !== $new_date){
-        	update_post_meta($post->ID, "release_date", $new_date);
+        	update_post_meta( $post->ID, "release_date", $new_date );
         }
         
         
-        $old_ver = get_post_meta($post->ID, "release_version", true);
+        $old_ver = get_post_meta( $post->ID, "release_version", true );
         $new_ver = $_POST['release_version'];
         
         if($old_ver !== $new_ver){
-        	update_post_meta($post->ID, "release_version", $new_ver);
+        	update_post_meta( $post->ID, "release_version", $new_ver );
+        }
+
+        $old_tested = get_post_meta( $post->ID, "compatibility_version", true );
+        $new_tested = $_POST['compatibility_version'];
+        
+        if($old_ver !== $new_ver){
+        	update_post_meta( $post->ID, "compatibility_version", $new_tested );
         }
 	}
 

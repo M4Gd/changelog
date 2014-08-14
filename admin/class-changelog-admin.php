@@ -51,6 +51,8 @@ class ChangelogAdmin {
 		add_action( 'add_meta_boxes', array( $this, 'add_changelog_custom_meta_box'  ) );
 		add_action( 'save_post'		, array( $this, 'save_changelog_custom_meta_box' ) );
 		add_action( 'admin_footer'	, array( $this, 'flush_plugin_rewrite_rules' 	 ) );
+
+		add_action( 'admin_init'	, array( $this, 'on_admin_init' ) );
 	}
 
 	/**
@@ -69,6 +71,17 @@ class ChangelogAdmin {
 
 		return self::$instance;
 	}
+
+
+	/**
+	 *
+	 * 
+	 */
+	public function on_admin_init() {
+
+		
+	}
+
 
 	/**
 	 * Register and enqueue admin-specific style sheet.
@@ -146,15 +159,20 @@ class ChangelogAdmin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function save_changelog_custom_meta_box($post_id){
+	public function save_changelog_custom_meta_box( $post_id ){
 		global $post;
+
+		$post_type = get_post_type( $post_id );
+
+		if( 'changelog' !== $post_type )  return;
+
 	        
         // Verify the nonce before proceeding. 
         if ( !isset( $_POST['log_options_nonce'] ) || !wp_verify_nonce( $_POST['log_options_nonce'], 'log_options' ) )
         return $post->ID;
         
         // check autosave
-        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) {
             return $post->ID;
         }
         
@@ -176,10 +194,17 @@ class ChangelogAdmin {
         $old_tested = get_post_meta( $post->ID, "compatibility_version", true );
         $new_tested = $_POST['compatibility_version'];
         
-        if($old_ver !== $new_ver){
+        if( $old_ver !== $new_ver ){
         	update_post_meta( $post->ID, "compatibility_version", $new_tested );
         }
+
+        include_once( 'includes/class-averta-image-text.php' );
+		generate_update_log_image( $post_id );
 	}
+
+
+
+
 
 	/**
 	 * Flush rewrite rules on first run

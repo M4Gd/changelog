@@ -11,7 +11,7 @@
  * Plugin Name:       Changelog
  * Plugin URI:        https://github.com/M4Gd/changelog
  * Description:       A WordPress plugin that allows you to add, archive and display your product's changelog in your WordPress website.
- * Version:           1.1.7
+ * Version:           1.2.0
  * Author:            averta
  * Author URI:        http://averta.net
  * Text Domain:       changelog

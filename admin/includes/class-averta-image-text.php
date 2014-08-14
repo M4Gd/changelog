@@ -144,16 +144,18 @@ class Averta_Image_Text {
 
 function generate_update_log_image( $post_id ) {
 
-	$taxonomies = get_object_taxonomies( get_post_type( $post_id ) );
+	$term_list = get_the_terms( $post_id, 'changelog-cat' );
 
-	$term_list = wp_get_post_terms( $post_id, 'changelog-cat', array( "fields" => "names" ) );
 	if( is_wp_error( $term_list ) || ! isset( $term_list[0] ) ) return;
 	
 
-	if( isset( $term_list[0] ) ) {
+	if( isset( $term_list[0]->slug ) ) {
+
+		$term_name = $term_list[0]->slug;
+
 		$upload_dir     = wp_upload_dir();
 
-		$filename       = $term_list[0] . '.png';
+		$filename       = $term_name . '.png';
 
 		$log_image_url  = $upload_dir['baseurl'] . '/changelog' . '/' . $filename;
 
@@ -161,7 +163,7 @@ function generate_update_log_image( $post_id ) {
 		
 		if ( wp_mkdir_p( $log_image_path ) ) {
 			
-			$log = file_get_contents( 'http://support.averta.net/envato/api/?log=' . $term_list[0] . '&limit=-1&flush_log' );
+			$log = file_get_contents( 'http://support.averta.net/envato/api/?log=' . $term_name . '&limit=-1&flush_log' );
 			
 			$font = dirname( __FILE__ ) . '/DroidSansMono.ttf';
 			$img = new Averta_Image_Text( $font, 614, 'auto', 15, 23, 8, array( 30, 30, 30 ), array( 250, 250, 250 )  );

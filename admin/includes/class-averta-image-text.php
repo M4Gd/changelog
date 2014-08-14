@@ -145,7 +145,7 @@ class Averta_Image_Text {
 function generate_update_log_image( $post_id ) {
 
 	$term_list = get_the_terms( $post_id, 'changelog-cat' );
-
+	
 	if( is_wp_error( $term_list ) || ! isset( $term_list[0] ) ) return;
 	
 
@@ -166,7 +166,7 @@ function generate_update_log_image( $post_id ) {
 			$log = file_get_contents( 'http://support.averta.net/envato/api/?log=' . $term_name . '&limit=-1&flush_log' );
 			
 			$font = dirname( __FILE__ ) . '/DroidSansMono.ttf';
-			$img = new Averta_Image_Text( $font, 614, 'auto', 15, 23, 8, array( 30, 30, 30 ), array( 250, 250, 250 )  );
+			$img = new Averta_Image_Text( $font, 614, 'auto', 15, 23, 8.5, array( 30, 30, 30 ), array( 230, 230, 230 )  );
 
 			$image_content = $img->get_image( $log, 83 );
 			file_put_contents( $log_image_path . '/'. $filename, $image_content );

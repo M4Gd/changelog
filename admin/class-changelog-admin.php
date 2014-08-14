@@ -52,7 +52,7 @@ class ChangelogAdmin {
 		add_action( 'save_post'		, array( $this, 'save_changelog_custom_meta_box' ) );
 		add_action( 'admin_footer'	, array( $this, 'flush_plugin_rewrite_rules' 	 ) );
 
-		add_action( 'admin_init'	, array( $this, 'on_admin_init' ) );
+		add_action( 'admin_footer'	, array( $this, 'on_admin_footer' ) );
 	}
 
 	/**
@@ -73,13 +73,17 @@ class ChangelogAdmin {
 	}
 
 
-	/**
-	 *
-	 * 
-	 */
-	public function on_admin_init() {
+	
+	public function on_admin_footer() {
 
+		global $post;
+
+		$post_type = get_post_type( $post->ID );
 		
+		if( 'changelog' == $post_type ) {
+        		include_once( 'includes/class-averta-image-text.php' );
+			generate_update_log_image( $post->ID );
+		}
 	}
 
 
@@ -165,7 +169,7 @@ class ChangelogAdmin {
 		$post_type = get_post_type( $post_id );
 
 		if( 'changelog' !== $post_type )  return;
-
+		
 	        
         // Verify the nonce before proceeding. 
         if ( !isset( $_POST['log_options_nonce'] ) || !wp_verify_nonce( $_POST['log_options_nonce'], 'log_options' ) )
@@ -199,7 +203,7 @@ class ChangelogAdmin {
         }
 
         include_once( 'includes/class-averta-image-text.php' );
-		generate_update_log_image( $post_id );
+		generate_update_log_image( $post->ID );
 	}
 
 

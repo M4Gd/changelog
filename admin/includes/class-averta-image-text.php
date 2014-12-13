@@ -166,7 +166,7 @@ function generate_update_log_image( $post_id ) {
 			$log = file_get_contents( 'http://support.averta.net/envato/api/?log=' . $term_name . '&limit=-1&flush_log' );
 			
 			$font = dirname( __FILE__ ) . '/DroidSansMono.ttf';
-			$img = new Averta_Image_Text( $font, 614, 'auto', 15, 23, 8.5, array( 30, 30, 30 ), array( 230, 230, 230 )  );
+			$img = new Averta_Image_Text( $font, 614, 'auto', 15, 23, 8.5, array( 30, 30, 30 ), array( 252, 252, 252 )  );
 
 			$image_content = $img->get_image( $log, 83 );
 			file_put_contents( $log_image_path . '/'. $filename, $image_content );

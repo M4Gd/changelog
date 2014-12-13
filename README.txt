@@ -1,5 +1,8 @@
 === Changelog ===
 
+ Version 1.2.3 (13.12.2014)
+- Generating Log image
+
  Version 1.0.0 (04.02.2014)
 - rewrite rules flush on plugin activation & deactivation
 

@@ -9,7 +9,8 @@
             showButtonPanel: true
         });
 
-		$('.cl_there_dig_version').mask("9.9.99");
+		$('#release_version').mask("9.9.99");
+		$('#compatibility_version').mask("9.9.9");
 	});
 
 }(jQuery));
